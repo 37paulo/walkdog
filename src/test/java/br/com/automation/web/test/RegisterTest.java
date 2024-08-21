@@ -12,8 +12,9 @@ public class RegisterTest extends RegisterPage {
     Faker faker = new Faker();
     String nome = faker.name().name();
     String email = faker.internet().emailAddress();
-    String cpf = faker.idNumber().valid();
-
+    String cpf = "25983473409";
+    String number = faker.number().digits(5);
+    String complement = faker.address().secondaryAddress();
 
     @Before
     public void acessPage(){
@@ -27,9 +28,16 @@ public class RegisterTest extends RegisterPage {
        super.sendEmail("//input[@placeholder=\"E-mail\"]", email);
        super.sendCpf("//input[@placeholder=\"CPF somente números\"]",cpf);
        super.sendCep("//input[@placeholder=\"CEP\"]","11013-030");
+       super.clickButton("//input[@value=\"Buscar CEP\"]");
+       super.sendNumber("//input[@name=\"addressNumber\"]", number);
+       super.sendcomplement("//input[@name=\"addressDetails\"]",complement);
+       super.clickButton("//li[span=\"Cuidar\"]");
+       super.uploadFile("//input[@accept=\"image/*\"]","C:\\image\\testeIMG.jpg");
+       super.clickButton("//button[@class=\"button-register\"]");
+       super.assertMessage("//div[@class='swal2-html-container']", "Recebemos o seu cadastro e em breve retornaremos o contato.");
     }
 
-
+    @After
     public void closeDriver(){
         driver.quit();
     }

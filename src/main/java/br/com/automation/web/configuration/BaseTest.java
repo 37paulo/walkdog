@@ -7,13 +7,12 @@ import java.util.concurrent.TimeUnit;
 
 public class BaseTest {
 
-   public WebDriver driver = new ChromeDriver();
+    public WebDriver driver = chromeDriver();
 
-   public WebDriver chromeDriver(){
-       WebDriver chromeDriver = new ChromeDriver();
-       chromeDriver.manage().window().maximize();
-       chromeDriver.manage().timeouts().implicitlyWait(5, TimeUnit.MILLISECONDS);
-
-       return driver;
-   }
+    private WebDriver chromeDriver() {
+        WebDriver chromeDriver = new ChromeDriver();
+        chromeDriver.manage().window().maximize();
+        chromeDriver.manage().timeouts().implicitlyWait(5, TimeUnit.MILLISECONDS);
+        return chromeDriver;
+    }
 }
