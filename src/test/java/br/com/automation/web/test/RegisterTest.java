@@ -1,40 +1,49 @@
 package br.com.automation.web.test;
 
+import br.com.automation.web.faker.Fakers;
 import br.com.automation.web.page.RegisterPage;
 import com.github.javafaker.Faker;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 public class RegisterTest extends RegisterPage {
 
-    Faker faker = new Faker();
-    String nome = faker.name().name();
-    String email = faker.internet().emailAddress();
-    String cpf = "25983473409";
-    String number = faker.number().digits(5);
-    String complement = faker.address().secondaryAddress();
+    By nameC = By.xpath("//input[@placeholder=\"Nome completo\"]");
+    By email = By.xpath("//input[@placeholder=\"E-mail\"]");
+    By cpf = By.xpath("//input[@placeholder=\"CPF somente números\"]");
+    By cep = By.xpath("//input[@placeholder=\"CEP\"]");
+    By number = By.xpath("//input[@name=\"addressNumber\"]");
+    By complement = By.xpath("//input[@name=\"addressDetails\"]");
+    By searchCep = By.xpath("//input[@value=\"Buscar CEP\"]");
+    By buttonCuidar = By.xpath("//li[span=\"Cuidar\"]");
+    By buttonRegister = By.xpath("//button[@class=\"button-register\"]");
+    By uploadImage = By.xpath("//input[@accept=\"image/*\"]");
+    By messageSucess= By.xpath("//input[@accept=\"image/*\"]");
+
+    Fakers fakers = new Fakers();
 
     @Before
     public void acessPage(){
         super.acessPage("https://walkdog.vercel.app/signup");
-
+        fakers.fakerTest();
     }
 
     @Test
     public void registerSucess(){
-       super.sendName("//input[@placeholder=\"Nome completo\"]", nome);
-       super.sendEmail("//input[@placeholder=\"E-mail\"]", email);
-       super.sendCpf("//input[@placeholder=\"CPF somente números\"]",cpf);
-       super.sendCep("//input[@placeholder=\"CEP\"]","11013-030");
-       super.clickButton("//input[@value=\"Buscar CEP\"]");
-       super.sendNumber("//input[@name=\"addressNumber\"]", number);
-       super.sendcomplement("//input[@name=\"addressDetails\"]",complement);
-       super.clickButton("//li[span=\"Cuidar\"]");
-       super.uploadFile("//input[@accept=\"image/*\"]","C:\\image\\testeIMG.jpg");
-       super.clickButton("//button[@class=\"button-register\"]");
-       super.assertMessage("//div[@class='swal2-html-container']", "Recebemos o seu cadastro e em breve retornaremos o contato.");
+        super.sendName(nameC, fakers.getNome());
+        super.sendEmail(email, fakers.getEmail());
+       super.sendCpf(cpf, fakers.getCpf());
+       super.sendCep(cep,"11013-030");
+       super.clickButton(searchCep);
+       super.sendNumber(number, fakers.getNumber());
+       super.sendcomplement(complement, fakers.getComplement());
+       super.clickButton(buttonCuidar);
+       super.uploadFile(uploadImage,"C:\\image\\testeIMG.jpg");
+       super.clickButton(buttonRegister);
+       super.assertMessage(messageSucess, "Recebemos o seu cadastro e em breve retornaremos o contato.");
     }
 
     @After
